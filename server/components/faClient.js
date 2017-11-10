@@ -33,7 +33,6 @@ if(accessToken == ""){
 }
 function getOptions(url,queryString){
   var opts = {
-    // url: 'http://fa.everteam.us:8080/analytics/api/collections/fs-docs/select',
     url: config.faClient.url + url,
     method:'POST',
     headers:{
@@ -70,7 +69,9 @@ export default {
     var opts = getOptions('/analytics/api/collections/fs-docs/select',
     {
       q: 'folderPath: (\"00-'+ project +'\")',
-      limit: 5000,
+      limit: '100',
+      rows:'100',
+      start:'0',
       fl: 'cs_uid,fileName,fileType,folder,lastModified,lastAccessed,NE_SSN,NE_PERSON '
     });
     callApi(opts,cb);
@@ -119,13 +120,11 @@ export default {
       var data = JSON.parse(body);
       // var source = _.find(data,function(o) { return o.name == command.project })
       var target = _.find(data,function(o) { return o.name == 'Archive' + command.project })
-      var optsDelete= getOptions('/storage/api/files/delete',{
-        ids: command.delFiles
-      });
+      var optsDelete= getOptions('/storage/api/files/delete?ids=["' + command.delFiles.join('\",\"') + '"]');
       callApi(optsDelete,function(response,body){
-        console.log(response);
+        // console.log(response);
         var optsMove = getOptions('/storage/api/files/move',{
-          ids:command.moveFiles,
+          ids:command.moveFiles.join(','),
           targetId: target.id
         })
         callApi(optsMove,function(response,body){
