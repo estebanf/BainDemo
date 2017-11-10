@@ -1,0 +1,44 @@
+.container
+  .rows
+    .col-lg-3
+      h4.menuTitle
+        | Projects
+        button.btn.btn-info.pull-right.btn-sm(ng-click='$ctrl.addProject()')
+          i.fa.fa-plus-square(aria-hidden='true')
+      input.form-control(type='text',ng-model='$ctrl.newFolder',ng-show='$ctrl.showNewFolder')
+      ul.nav.nav-pills.nav-stacked.menuList
+        li(role='presentation', ng-repeat='project in $ctrl.projects',ng-class="{'active' : project.active}")
+          a(ng-click='$ctrl.selectProject(project)')
+            | {{ project.name }}
+    .col-lg-9
+      button.btn.btn-danger.pull-right(ng-click='$ctrl.archive()')
+        li.fa.fa-exclamation-circle.fa-fw
+        | &nbsp;Archive
+      table.table.table-striped.table-hover.table-condensed
+        tbody
+          thead
+            th
+              | File
+            th
+              | Type
+            th
+              | Last accessed
+            th
+              | Last modified
+            th
+              | Priority
+              
+          tr(ng-repeat='file in $ctrl.projectFiles')
+            td
+              | {{ file.fullPath}}
+            td
+              | {{ file.fileType}}
+            td
+              | {{ file.lastAccessed}}
+            td
+              | {{ file.lastModified}}
+            td
+              a(ng-click='$ctrl.toogleKeep(file)')
+                | {{ file.keep}}
+
+              
