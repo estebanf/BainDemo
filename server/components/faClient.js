@@ -72,7 +72,7 @@ export default {
       limit: '100',
       rows:'100',
       start:'0',
-      fl: 'cs_uid,fileName,fileType,folder,lastModified,lastAccessed,NE_SSN,NE_PERSON '
+      fl: 'cs_uid,fileName,fileType,folder,lastModified,lastAccessed,NE_SSN,doc_type,text_NePos'
     });
     callApi(opts,cb);
   },

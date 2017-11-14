@@ -64,7 +64,9 @@ export class MainController {
   }
   archive(){
     if(this.activeProject && this.projectFiles){
-      this.$http.post('/api/faClient/',{project: this.activeProject.name, files:this.projectFiles}).then(response => {
+      this.$http.post('/api/faClient/',{project: this.activeProject.name, files:_.map(this.projectFiles,function(o){
+        return { docId: o.docId, keep: o.keep }
+      })}).then(response => {
         console.log(response);
       })
     }

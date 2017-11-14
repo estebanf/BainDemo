@@ -30,6 +30,22 @@ export function show(req,res){
         item = _.merge(item,field);
       });
       item.fullPath = '/' + item.folder.join('/') + '/' + item.fileName;
+      if(item.text_NePos) { item.text_NePos = JSON.parse(item.text_NePos)}
+      item.sensitive = false;
+      if(item.NE_SSN){
+        item.NE_SSN = _.uniq(item.NE_SSN);
+        item.sensitive = true;
+      }
+      else {
+          if(item.text_NePos){
+            var ssnPos = _.filter(item.text_NePos, function(o) { return o.type == "NE_SSN" });
+            if(ssnPos && ssnPos.lenght > 0){
+              console.log(ssnPos);
+              item.NE_SSN = _.map(ssnPos.values,function(o) { return o.gloss });
+              item.sensitive = true;
+            }
+          }
+      }
       return item;
     });
     var ids = _.map(files,function(obj){

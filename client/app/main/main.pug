@@ -1,4 +1,4 @@
-.container
+.container-fluid
   .rows
     .col-lg-3
       h4.menuTitle
@@ -26,6 +26,10 @@
             th
               | Last modified
             th
+              | Doc Type
+            th
+              | Sensitive
+            th
               | Priority
               
           tr(ng-repeat='file in $ctrl.projectFiles')
@@ -38,7 +42,13 @@
             td
               | {{ file.lastModified}}
             td
+              | {{ file.docType}}
+            td
+              i.fa.fa-thumbs-o-up.fa-2x(ng-if='!file.sensitive')
+              i.fa.fa-eye.fa-2x(ng-if='file.sensitive',tooltip-placement="top", uib-tooltip=" {{ file.NE_SSN.join('\n') }}")
+            td
               a(ng-click='$ctrl.toogleKeep(file)')
-                | {{ file.keep}}
+                i.fa.fa-plus-circle.fa-2x(ng-if="file.keep")
+                i.fa.fa-minus-circle.fa-2x(ng-if="!file.keep")
 
               
