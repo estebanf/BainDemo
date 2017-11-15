@@ -106,6 +106,7 @@ export function create(req, res) {
     delFiles: delFiles,
   }
   faClient.archive(command,function(response,body){
+    console.log("called back");
     res.status(200).send(command);
   });
 

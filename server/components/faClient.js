@@ -118,19 +118,26 @@ export default {
     });
     callApi(opts,function(response,body){
       var data = JSON.parse(body);
-      // var source = _.find(data,function(o) { return o.name == command.project })
       var target = _.find(data,function(o) { return o.name == 'Archive' + command.project })
-      var optsDelete= getOptions('/storage/api/files/delete?ids=["' + command.delFiles.join('\",\"') + '"]');
-      callApi(optsDelete,function(response,body){
-        // console.log(response);
-        var optsMove = getOptions('/storage/api/files/move',{
-          ids:command.moveFiles.join(','),
-          targetId: target.id
-        })
-        callApi(optsMove,function(response,body){
-            if(cb) { cb (); }
-        })
+      _.each(command.delFiles,function(o){
+        console.log('/storage/api/files/delete?ids=["' + o + '"]')
+        var optsDelete= getOptions('/storage/api/files/delete?ids=["' + o + '"]');
+        callApi(optsDelete,function(response,body){
+          console.log(body);
+        });
       })
+      var optsMove = getOptions('/storage/api/files/move',{
+        ids:command.moveFiles.join(','),
+        targetId: target.id
+      })
+      callApi(optsMove,function(response,body){
+          if(cb) { cb (); }
+      })
+
+      // var optsDelete= getOptions('/storage/api/files/delete?ids=["' + command.delFiles.join('\",\"') + '"]');
+      // callApi(optsDelete,function(response,body){
+      //   // console.log(response);
+      // })
 
     })
   }
